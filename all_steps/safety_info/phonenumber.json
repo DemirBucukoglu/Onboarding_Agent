@@ -1,0 +1,21 @@
+{
+  "employees": {
+    "c": {
+      "phone_number": "8644944474",
+      "collected_date": "2025-06-11T02:34:10.786922"
+    },
+    "z": {
+      "phone_number": "8644944474",
+      "collected_date": "2025-06-11T02:38:16.320403"
+    },
+    "demir": {
+      "phone_number": "864 494 4474",
+      "collected_date": "2025-06-25T14:15:16.611153"
+    }
+  },
+  "metadata": {
+    "description": "Employee phone numbers for safety purposes",
+    "total_records": 3,
+    "last_updated": "2025-06-25T14:15:16.611153"
+  }
+}

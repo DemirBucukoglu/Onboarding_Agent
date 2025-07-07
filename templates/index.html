@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Assistant</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 15px;
+        }
+
+        .sidebar h3 {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            font-size: 11px;
+            color: #495057;
+        }
+
+        .checkbox {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: white;
+        }
+
+        .checkbox.completed {
+            background: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .checkbox.completed:after {
+            content: '✓';
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #6c757d;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 16px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome {
+            text-align: center;
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        .welcome h2 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #5a6268;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            max-width: 70%;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.user .message-bubble {
+            background: #6c757d;
+            color: white;
+        }
+
+        .message.assistant .message-bubble {
+            background: white;
+            color: #495057;
+            border: 1px solid #e9ecef;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            margin-top: auto;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 15px;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .send-btn {
+            padding: 8px 15px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .send-btn:hover {
+            background: #5a6268;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                height: 90vh;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if session.employee_name %}
+        <!-- Sidebar (only show if logged in) -->
+        <div class="sidebar">
+            <h3>Progress</h3>
+            {% for step_slug, step in progress.steps.items() %}
+            <div class="task">
+                <div class="checkbox {{ step.status }}"></div>
+                <span>{{ step.title }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Main Content -->
+        <div class="main">
+            <div class="header">
+                <h1>
+                    {% if session.employee_name %}
+                        {{ session.employee_name }}
+                    {% else %}
+                        Onboarding Assistant
+                    {% endif %}
+                </h1>
+            </div>
+
+            <div class="content">
+                {% if not session.employee_name %}
+                <!-- Welcome Form -->
+                <div class="welcome">
+                    <h2>Welcome</h2>
+                    <p>I'm your onboarding assistant. I'll help track your progress and answer questions.</p>
+                    
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="error">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form action="{{ url_for('start_session') }}" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="employee_name" class="form-input" 
+                                   placeholder="Enter your full name" required>
+                        </div>
+                        <button type="submit" class="btn">Start Chat</button>
+                    </form>
+                </div>
+                {% else %}
+                <!-- Chat Interface -->
+                <div class="messages">
+                    {% for msg in chat_history %}
+                    <div class="message {{ msg.sender }}">
+                        <div class="message-bubble">{{ msg.message|safe }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <form action="{{ url_for('chat_message') }}" method="POST" class="input-form">
+                    <textarea name="message" class="message-input" 
+                              placeholder="Type your message..." rows="1" required></textarea>
+                    <button type="submit" class="send-btn">Send</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+// Auto-scroll chat to bottom
+function scrollToBottom() {
+    const messagesContainer = document.querySelector('.messages');
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+
+// Scroll to bottom when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    scrollToBottom();
+});
+
+// Auto-resize textarea and handle enter key
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.querySelector('.message-input');
+    const form = document.querySelector('.input-form');
+    
+    if (textarea && form) {
+        // Auto-resize textarea
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+        
+        // Submit form on Enter (but not Shift+Enter)
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                form.submit();
+            }
+        });
+    }
+});
+</script>
+</html> 

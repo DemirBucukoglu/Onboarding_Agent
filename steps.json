@@ -1,0 +1,229 @@
+[
+  {
+    "title": "Complete Code of Conduct Training",
+    "description": "Watch the mandatory code of conduct video training and complete the assessment. This must be completed before receiving your company email account.",
+    "type": "video_training",
+    "required_before": ["account_verification"],
+    "config": {
+      "video_path": "code_of_conduct/code_of_conduct_training.mp4",
+      "video_url": "https://company.example.com/training/code-of-conduct",
+      "assessment_required": true,
+      "passing_score": 80,
+      "time_limit_minutes": 30,
+      "max_attempts": 3,
+      "retry_on_failure": true,
+      "answer_key": {
+        "1": "B",
+        "2": "A", 
+        "3": "C",
+        "4": "D",
+        "5": "B"
+      },
+      "quiz_questions": [
+        {
+          "id": 1,
+          "question": "What should you do if you witness harassment in the workplace?",
+          "options": [
+            "A) Ignore it and hope it stops",
+            "B) Report it to HR or your supervisor immediately",
+            "C) Handle it yourself by confronting the person",
+            "D) Wait to see if it happens again"
+          ],
+          "correct_answer": 1,
+          "correct_letter": "B",
+          "explanation": "All harassment should be reported to HR or your supervisor immediately to ensure proper handling."
+        }
+      ]
+    },
+    "get_status_api": "https://api.example.com/training/code-of-conduct/{employee_id}",
+    "complete_api": "https://api.example.com/training/code-of-conduct/{employee_id}/complete",
+    "keywords": ["code of conduct", "training", "video", "ethics", "policy"]
+  },
+  {
+    "title": "Safety Information Collection",
+    "description": "Before you start your onboarding, let's keep you safe first! Provide your phone number and emergency contact information for safety purposes.",
+    "type": "safety_form",
+    "depends_on": ["complete_code_of_conduct_training"],
+    "config": {
+      "required_fields": [
+        "phone_number",
+        "emergency_contact_name",
+        "emergency_contact_phone",
+        "emergency_contact_relationship"
+      ],
+      "validation": {
+        "phone_format": "xxx-xxx-xxxx",
+        "emergency_phone_format": "xxx-xxx-xxxx",
+        "min_name_length": 2,
+        "valid_relationships": ["Parent", "Spouse", "Sibling", "Friend", "Partner", "Guardian", "Other"]
+      },
+      "security": {
+        "encrypted_storage": true,
+        "access_restricted": true,
+        "retention_policy": "employee_lifecycle"
+      },
+      "purpose": "Emergency contact and safety communication"
+    },
+    "get_status_api": "https://api.example.com/safety-info/{employee_id}",
+    "complete_api": "https://api.example.com/safety-info/{employee_id}/complete",
+    "keywords": ["safety", "emergency", "phone", "contact", "information", "secure"]
+  },
+  {
+    "title": "Get ID Badge",
+    "description": "Upload your photo and receive your company ID badge. Your photo will be used to create your official company identification badge.",
+    "type": "file_upload",
+    "config": {
+      "upload_type": "photo",
+      "max_file_size_mb": 5,
+      "allowed_formats": ["jpg", "jpeg", "png"],
+      "requirements": ["clear photo", "professional appearance", "face clearly visible"],
+      "auto_generate_badge": true,
+      "badge_template": "company_standard",
+      "delivery_method": "pickup_from_reception"
+    },
+    "get_status_api": "https://api.example.com/id-badge/{employee_id}",
+    "complete_api": "https://api.example.com/id-badge/{employee_id}/complete",
+    "keywords": ["id", "badge", "photo", "upload", "identification"]
+  },
+  {
+    "title": "Account Verification and Setup",
+    "description": "Verify your email address, set up your password, and complete account security setup. You will receive an email with setup instructions.",
+    "type": "account_setup",
+    "depends_on": ["get_id_badge"],
+    "config": {
+      "email_generation": true,
+      "password_generation": true,
+      "simple_setup": true
+    },
+    "get_status_api": "https://api.example.com/account/{employee_id}",
+    "complete_api": "https://api.example.com/account/{employee_id}/complete",
+    "keywords": ["account", "password", "email", "verification", "setup", "login"]
+  },
+  {
+    "title": "Choose Your Laptop",
+    "description": "Select your preferred laptop configuration from the available options. Consider your role requirements and personal preferences.",
+    "type": "selection",
+    "config": {
+      "selection_type": "laptop",
+      "options": [
+        {
+          "id": "macbook_pro_14",
+          "name": "MacBook Pro 14\" M3",
+          "specs": "Apple M3 chip, 16GB RAM, 512GB SSD",
+          "best_for": ["Development", "Design", "General Use"]
+        },
+        {
+          "id": "macbook_air_13",
+          "name": "MacBook Air 13\" M3",
+          "specs": "Apple M3 chip, 16GB RAM, 256GB SSD",
+          "best_for": ["General Use", "Portability"]
+        },
+        {
+          "id": "thinkpad_x1",
+          "name": "ThinkPad X1 Carbon",
+          "specs": "Intel i7, 16GB RAM, 512GB SSD, Windows 11",
+          "best_for": ["Development", "Business Use"]
+        },
+        {
+          "id": "dell_precision",
+          "name": "Dell Precision 5570",
+          "specs": "Intel i7, 32GB RAM, 1TB SSD, NVIDIA RTX",
+          "best_for": ["Heavy Development", "Data Science", "CAD"]
+        }
+      ],
+      "allow_custom_request": true,
+      "approval_required_for_custom": true,
+      "delivery_time_days": 3
+    },
+    "get_status_api": "https://api.example.com/laptop/{employee_id}",
+    "complete_api": "https://api.example.com/laptop/{employee_id}/complete",
+    "keywords": ["laptop", "computer", "choose", "select", "hardware"]
+  },
+  {
+    "title": "Mentor Buddy Assignment",
+    "description": "You will be assigned a mentor buddy who will help guide you through your first weeks. Your buddy will contact you via email.",
+    "type": "buddy_assignment",
+    "config": {
+      "assignment_criteria": [
+        "same_department",
+        "experience_level",
+        "availability",
+        "personality_match"
+      ],
+      "buddy_responsibilities": [
+        "Weekly check-ins for first month",
+        "Answer questions about company culture",
+        "Help with navigation and introductions",
+        "Provide feedback and support"
+      ],
+      "auto_send_introduction_email": true,
+      "email_template": "buddy_introduction",
+      "follow_up_schedule": ["day_1", "week_1", "week_2", "week_4"],
+      "buddy_training_required": true
+    },
+    "get_status_api": "https://api.example.com/buddy/{employee_id}",
+    "complete_api": "https://api.example.com/buddy/{employee_id}/complete",
+    "keywords": ["buddy", "mentor", "assignment", "guide", "support"]
+  },
+  {
+    "title": "Team Introduction Notifications",
+    "description": "Automatic notifications will be sent to your team members to introduce you and encourage them to reach out with welcomes and support.",
+    "type": "team_notification",
+    "depends_on": ["mentor_buddy_assignment"],
+    "config": {
+      "notification_scope": [
+        "immediate_team",
+        "department",
+        "cross_functional_partners"
+      ],
+      "email_template": "new_team_member_introduction",
+      "include_info": [
+        "name",
+        "role",
+        "start_date",
+        "background",
+        "photo",
+        "fun_facts"
+      ],
+      "encourage_actions": [
+        "send_welcome_email",
+        "schedule_coffee_chat",
+        "share_team_resources",
+        "introduce_yourself"
+      ],
+      "auto_schedule_team_meeting": true,
+      "meeting_within_days": 5
+    },
+    "get_status_api": "https://api.example.com/team-notification/{employee_id}",
+    "complete_api": "https://api.example.com/team-notification/{employee_id}/complete",
+    "keywords": ["team", "introduction", "notification", "welcome", "announce"]
+  },
+  {
+    "title": "Receive Policy Book and Setup Q&A Access",
+    "description": "Download the company policy book PDF and get access to the AI-powered policy assistant for any questions about company policies and procedures.",
+    "type": "document_access",
+    "config": {
+      "document_type": "policy_book",
+      "file_path": "pdf/policy_book.pdf",
+      "download_required": true,
+      "ai_assistant_enabled": true,
+      "searchable_content": true,
+      "chat_integration": true,
+      "topics_covered": [
+        "Company Policies",
+        "HR Procedures",
+        "Benefits Information",
+        "Code of Conduct",
+        "Safety Guidelines",
+        "IT Security Policies",
+        "Remote Work Guidelines"
+      ],
+      "update_notifications": true,
+      "version_tracking": true
+    },
+    "get_status_api": "https://api.example.com/policy-book/{employee_id}",
+    "complete_api": "https://api.example.com/policy-book/{employee_id}/complete",
+    "keywords": ["policy", "book", "handbook", "pdf", "download", "policies", "procedures"]
+  }
+]
+  
