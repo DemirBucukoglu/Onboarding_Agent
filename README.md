@@ -21,16 +21,15 @@
 
 ## 📸 Screenshots
 
-🔹 **[Chat Interface](examples/chat_interface.png)**
-🔹 **[Choose Laptop](examples/choose_laptop.png)**
-🔹 **[Policy Acknowledgement](examples/policy_form.png)**
-🔹 **[Completion Summary](examples/flow_summary.png)**
+🔹 **[Welcome Screen](images/1.png)**
+🔹 **[Chat Screen](images/2.png)**
+🔹 **[How AI Works](examples/3.png)**
 
 ## 🔧 Setup
 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/YourOrg/AI_Onboarding_Agent.git
-   cd AI_Onboarding_Agent
+   git clone https://github.com/YourOrg/Onboarding_Agent.git
+   cd Onboarding_Agent
    ```
