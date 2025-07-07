@@ -17,7 +17,7 @@
   * Team Introduction
 * **LLM‑Powered Conversations**: Uses your preferred chat model to provide context‑aware responses.
 * **Persistent Progress**: Employees can pause and resume without losing their place.
-* **Extensible Architecture**: New tasks can be added with just a few lines of code.
+
 
 ## 📸 Screenshots
 
