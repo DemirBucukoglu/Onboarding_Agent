@@ -17,6 +17,7 @@
   * Team Introduction
 * **LLM‑Powered Conversations**: Uses your preferred chat model to provide context‑aware responses.
 * **Persistent Progress**: Employees can pause and resume without losing their place.
+* **Handbook Memory**: The agent loads your entire employee handbook into its working memory, so new hires can ask natural‑language questions
 
 
 ## 📸 Screenshots
